@@ -6,10 +6,10 @@ template<class K,class V,size_t M>
 struct BTreeNode
 {
 	//将数组的大小预留出一位是为了便于分裂
-	pair<K, V> _kvs[M];			//kvs数组
-	BTreeNode<K, V, M>* _parent;		//指向父结点的指针，便于分裂
-	BTreeNode<K, V, M>* _subs[M + 1];		//孩子
-	size_t _size;				//kvs数量,有效数据个数
+	pair<K, V> _kvs[M];					//kvs数组,存放kv
+	BTreeNode<K, V, M>* _parent;		   //指向父结点的指针，便于分裂
+	BTreeNode<K, V, M>* _subs[M + 1];	  //指向孩子结点的指针数组
+	size_t _size;				         //kvs数量,有效数据个数
 	
 	BTreeNode()
 		:_parent(NULL)
@@ -151,7 +151,7 @@ private:
 		for (; i < root->_size; i++)
 		{
 			_InOrder(root->_subs[i]);
-			cout << root->_kvs[i].first << " ：" << root->_kvs[i].second << endl;
+			cout << "    "<<root->_kvs[i].first << " ：" << root->_kvs[i].second << endl;
 		}
 		_InOrder(root->_subs[i]);
 	}
@@ -168,9 +168,8 @@ private:
 			cur->_kvs[i] = cur->_kvs[i - 1];
 			cur->_subs[i + 1] = cur->_subs[i];
 		}
-		cur->_subs[index + 1] = cur->_subs[index];
 		cur->_kvs[index] = kv;
-		cur->_subs[index] = sub;
+		cur->_subs[index + 1] = sub;
 		if (sub != NULL)
 		{
 			sub->_parent = cur;
@@ -185,7 +184,8 @@ private:
 void  TestBTree()
 {
 	BTree<int, int, 3> t;
-	int arr[] = { 53, 75, 139, 49, 145, 36, 101 };
+	int arr[] = { 50, 75, 139, 49, 145, 36, 101 };
+	//int arr[] = { 1, 5, 16, 17, 18, 20, 30, 35, 36, 40, 45, 46, 50, 55, 56 };
 	for (size_t i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
 	{
 		t.Insert(make_pair(arr[i], i));
