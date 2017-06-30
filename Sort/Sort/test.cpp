@@ -5,7 +5,10 @@ using namespace std;
 #include "Sort.hpp"
 int main()
 {
-	TestInsertSort();
-	TestShellSort();
+//	TestInsertSort();
+//	TestShellSort();
+//	TestSelectSort();
+//	TestHeapSort();
+	TestBubbleSort();
 	return 0;
 }
