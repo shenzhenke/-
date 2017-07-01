@@ -57,14 +57,30 @@ int main()
 	//cout << c.Find(30, array) << endl;
 	//cout << c.Find(25, array) << endl;
 
-	Solution a;
-	int arr[] = { 1, 6, 2, 3, 4, 5, 1, 2, 1, 1 };
-	vector<int> v;
-	for (size_t i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
-	{
-		v.push_back(arr[i]);
-	}
-	cout << a.MoreThanHalfNum_Solution(v) << endl;
+	//Solution a;
+	//int arr[] = { 1, 6, 2, 3, 4, 5, 1, 2, 1, 1 };
+	//vector<int> v;
+	//for (size_t i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	//{
+	//	v.push_back(arr[i]);
+	//}
+	//cout << a.MoreThanHalfNum_Solution(v) << endl;
 
+
+//	//子数组最大和测试用用例
+//	Solution a;
+////	int arr[] = { -1, -6, -2, -3, -4, -5, -1, -2, -1, -10 };
+//	int arr[] = { 2, -5, 4, 9, -3, 6, 8, -7, 1, 100 };
+////	int arr[] = { 2, -5 };
+//
+//	cout << a.SubArrayMaxSum(arr, sizeof(arr) / sizeof(arr[0])) << endl;
+
+	//子数组最大和为给定值测试用用例
+		Solution a;
+		int arr[] = { 6, 1, 7, 1, 2, 2, 1, 3, 1, 1, 1, 1, 1 };
+	//	int arr[] = { 2, -5, 4, 9, -3, 6, 8, -7, 1, 100 };
+	////	int arr[] = { 2, -5 };
+	//
+		cout << a.SubArrayMaxLegth(arr, sizeof(arr) / sizeof(arr[0]), 5) << endl;
 	return 0;
 }

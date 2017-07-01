@@ -188,6 +188,8 @@
 //	}
 //};
 
+
+//二维数组的查找问题
 //class Solution
 //{
 //
@@ -225,18 +227,119 @@
 //数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
 //例如输入一个长度为9的数组{ 1, 2, 3, 2, 2, 2, 5, 4, 2 }。
 //由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
-class Solution {
+
+//class Solution {
+//public:
+//	int MoreThanHalfNum_Solution(vector<int> numbers) 
+//	{
+//		int Size = numbers.size();
+//		map<int, int> countNumber;
+//		for (int i = 0; i < Size; i++)
+//		{
+//			countNumber[numbers[i]]++;
+//			if (countNumber[numbers[i]] >= (Size + 1) / 2)
+//				return numbers[i];
+//		}
+//		return 0;
+//	}
+//};
+
+
+//子数组最大和问题
+
+//class Solution
+//{
+//public:
+	//int SubArrayMaxSum(int *a, size_t n)
+	//{
+	//	if ((a == NULL) || (n == 0))
+	//		return 0;
+	//	int max = a[0];
+	//	int cur = a[0];
+	//	for (size_t i = 1; i < n; i++)
+	//	{
+	//		cur += a[i];
+	//		max = (max>cur ? max : cur);  //当max > cur时，需要更新max
+	//		if (cur < 0)
+	//			cur = 0;                 //当cur < 0 时，需要将cur置0。
+	//	}
+	//	return max;
+	//}
+//};
+
+
+//两个子数组最大的累加和问题
+//class Solution
+//{
+//public:
+//	int SubArrayMaxSum(int *a,  size_t n)
+//	{
+//		if ((a == NULL) || (n < 1))
+//			return 0;
+//		int maxR = a[n - 1];
+//		int curR = a[n - 1];
+//		vector<int> maxSubSumR;
+//		maxSubSumR.push_back(maxR);
+//		int maxSubSum = a[0];
+//		int cur = a[0];
+//		for (int i = n - 2; i >= 0; i--)
+//		{
+//			curR += a[i];
+//			maxR = (maxR > curR ? maxR : curR);  //当max > cur时，需要更新max
+//			maxSubSumR.push_back(maxR);
+//			if (curR < 0)
+//				curR = 0;                 //当cur < 0 时，需要将cur置0。
+//		}
+//		int max = a[0] + maxSubSumR[n - 2];
+//		int j = 1;
+//		for (int i = n - 3; i >= 0; i--)
+//		{
+//			cur += a[j];
+//			maxSubSum = (maxSubSum>cur ? maxSubSum : cur);
+//			max = (max > (maxSubSum + maxSubSumR[i]) ? max : (maxSubSum + maxSubSumR[i]));
+//			j++;
+//			if (cur < 0)
+//				cur = 0;
+//		}
+//		return max;
+//	}
+//};
+
+//未排序的正数数组中累加和为给定值的最长子数组长度
+class   Solution 
+{
 public:
-	int MoreThanHalfNum_Solution(vector<int> numbers) 
+	int SubArrayMaxLegth(int* a, int n, int key)
 	{
-		int Size = numbers.size();
-		map<int, int> countNumber;
-		for (int i = 0; i < Size; i++)
+		if (a == NULL || n < 0 || key < 0)
+			return -1;
+		int left = -1;
+		int length = 0;
+		int maxLength = 0;
+		int  right = -1;
+		int sum = 0;
+		//循环结束的条件left==right&& left==n-1||right > n-1
+		while ((left != right) || (left != n - 1))
 		{
-			countNumber[numbers[i]]++;
-			if (countNumber[numbers[i]] >= (Size + 1) / 2)
-				return numbers[i];
+			if (sum > key)
+			{
+				left++;
+				sum -= a[left];
+				length--;
+			}
+			else
+			{
+				if (sum == key)
+				{
+					maxLength = maxLength > length ? maxLength : length;
+				}
+					right++;
+					length++;
+					if (right > n - 1)
+						break;
+					sum += a[right];
+			}
 		}
-		return 0;
+		return maxLength;
 	}
 };
