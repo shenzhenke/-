@@ -173,7 +173,7 @@ void TestHeapSort()
 	Printf(arr, sizeof(arr) / sizeof(arr[0]));
 }
 
-void Bubble(int* a, size_t n)
+void BubbleSort(int* a, size_t n)
 {
 	assert(a != NULL);
 	int start = 0;
@@ -202,6 +202,164 @@ void TestBubbleSort()
 {
 	int arr[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	Printf(arr, sizeof(arr) / sizeof(arr[0]));
-	Bubble(arr, sizeof(arr) / sizeof(arr[0]));
+	BubbleSort(arr, sizeof(arr) / sizeof(arr[0]));
+	Printf(arr, sizeof(arr) / sizeof(arr[0]));
+}
+
+
+//×óÓÒÖ¸Õë·¨
+//int PartSort(int* a,int left,int right)
+//{
+//	if (left >= right)
+//		return 0;
+//	int key = right;
+//	while (left < right)
+//	{
+//		while (a[left] <= a[key] && left < right)
+//		{
+//			left++;
+//		}
+//		while (a[right] >= a[key] && left < right)
+//		{
+//			right--;
+//		}
+//		swap(a[left], a[right]);
+//	}
+//	swap(a[left], a[key]);
+//	return left;
+//}
+
+
+//int PartSort(int* a, int left, int right)
+//{
+//	int tmp = a[right];
+//	while (left < right)
+//	{
+//
+//		while (a[left] <= tmp&&left < right)
+//		{
+//			left++;
+//		}
+//		a[right] = a[left];
+//		while (a[right] >= tmp&&left < right)
+//		{
+//			right--;
+//		}
+//		a[left] = a[right];
+//	}
+//	a[left] = tmp;
+//	return left;
+//}
+
+int PartSort(int* a, int begin, int end)
+{
+	int cur = begin;
+	int prev = begin - 1;	
+	while (cur < end)
+	{
+		while (cur < end  && a[cur] > a[end])
+		{
+			cur++;
+		}
+		if (cur < end)
+		{
+			prev++;
+			swap(a[cur], a[prev]);
+			cur++;
+		}
+	}
+	prev++;
+	swap(a[prev], a[end]);
+	return prev;
+}
+void QuickSort(int* a, int left, int right)
+{
+	assert(a != NULL);
+	if (left >= right)
+		return;
+	int div = PartSort(a, left, right);
+	QuickSort(a, left, div - 1);
+	QuickSort(a, div + 1, right);
+}
+
+void TestQuickSort()
+{
+//	int arr[] = { 2, 1, 4, 9, 3, 6, 8, 7, 0, 5 };
+//	int arr[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	int arr[] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 5 };
+	Printf(arr, sizeof(arr) / sizeof(arr[0]));
+	QuickSort(arr, 0, sizeof(arr) / sizeof(arr[0]) - 1);
+	Printf(arr, sizeof(arr) / sizeof(arr[0]));
+}
+
+void _Merge(int* a, int *tmp, int begin1, int end1, int begin2, int end2)
+{
+	int i = begin1;
+	int index = begin1;
+	while (begin1 <= end1&&begin2 <= end2)
+	{
+		if (a[begin1] < a[begin2])
+		{
+			tmp[i] = a[begin1];
+			begin1++;			
+			i++;
+		}
+		else
+		{
+			tmp[i] = a[begin2];
+			begin2++;
+			i++;
+		}
+	}
+	if (begin1 > end1)
+	{
+		while (begin2 <= end2)
+		{
+			tmp[i] = a[begin2];
+			begin2++;
+			i++;
+		}
+	}
+	else
+	{
+		while (begin1 <= end1)
+		{
+			tmp[i] = a[begin1];
+			begin1++;
+			i++;
+		}
+	}
+	while (index < i)
+	{
+		a[index] = tmp[index];
+		++index;
+	}
+	return;
+}
+
+void _MergeSort(int *a, int *tmp, int begin, int end)
+{
+	if (begin >= end)
+		return;
+	int mid = begin + (end - begin) / 2;
+	_MergeSort(a, tmp, begin, mid);
+	_MergeSort(a, tmp, mid + 1, end);
+	_Merge(a, tmp, begin, mid, mid + 1, end);
+}
+void  MergerSort(int* a, int n)
+{
+	int* tmp = new int[n];
+	_MergeSort(a, tmp, 0, n - 1);
+	delete[] tmp;
+}
+
+
+void TestMergeSort()
+{
+	//int arr[] = { 2, 1, 4, 9, 3, 6, 8, 7, 0, 5 };
+	//int arr[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	int arr[] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 5 };
+	Printf(arr, sizeof(arr) / sizeof(arr[0]));
+	MergerSort(arr, sizeof(arr) / sizeof(arr[0]));
 	Printf(arr, sizeof(arr) / sizeof(arr[0]));
 }

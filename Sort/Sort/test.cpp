@@ -5,10 +5,16 @@ using namespace std;
 #include "Sort.hpp"
 int main()
 {
+	//≤Â»Î≈≈–Ú
 //	TestInsertSort();
 //	TestShellSort();
+	//—°‘Ò≈≈–Ú
 //	TestSelectSort();
 //	TestHeapSort();
-	TestBubbleSort();
+	//Ωªªª≈≈–Ú
+//	TestBubbleSort();
+//	TestQuickSort();
+
+	TestMergeSort();
 	return 0;
 }
