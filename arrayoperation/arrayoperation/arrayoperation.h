@@ -306,40 +306,99 @@
 //};
 
 //未排序的正数数组中累加和为给定值的最长子数组长度
-class   Solution 
+//class   Solution 
+//{
+//public:
+//	int SubArrayMaxLegth(int* a, int n, int key)
+//	{
+//		if (a == NULL || n < 0 || key < 0)
+//			return -1;
+//		int left = -1;
+//		int length = 0;
+//		int maxLength = 0;
+//		int  right = -1;
+//		int sum = 0;
+//		//循环结束的条件left==right&& left==n-1||right > n-1
+//		while ((left != right) || (left != n - 1))
+//		{
+//			if (sum > key)
+//			{
+//				left++;
+//				sum -= a[left];
+//				length--;
+//			}
+//			else
+//			{
+//				if (sum == key)
+//				{
+//					maxLength = maxLength > length ? maxLength : length;
+//				}
+//					right++;
+//					length++;
+//					if (right > n - 1)
+//						break;
+//					sum += a[right];
+//			}
+//		}
+//		return maxLength;
+//	}
+//};
+
+//给定一个无序矩阵(Matrix)，其中有正，有负，有 0，求子矩阵的最大和
+#define  M 100
+#define  N 100
+class Solution
 {
 public:
-	int SubArrayMaxLegth(int* a, int n, int key)
+	int SubMatrixMax(int a[4][4], int m, int n)
 	{
-		if (a == NULL || n < 0 || key < 0)
-			return -1;
-		int left = -1;
-		int length = 0;
-		int maxLength = 0;
-		int  right = -1;
-		int sum = 0;
-		//循环结束的条件left==right&& left==n-1||right > n-1
-		while ((left != right) || (left != n - 1))
+		if (a == NULL)
+			return 0;
+		int SubMatrixValue[M][N] = { 0 };
+		for (int i = 0; i < m; i++)
 		{
-			if (sum > key)
+			for (int j = 0; j < n; j++)
 			{
-				left++;
-				sum -= a[left];
-				length--;
-			}
-			else
-			{
-				if (sum == key)
-				{
-					maxLength = maxLength > length ? maxLength : length;
-				}
-					right++;
-					length++;
-					if (right > n - 1)
-						break;
-					sum += a[right];
+				if (i == 0)
+					SubMatrixValue[i][j] = a[i][j];
+				else
+					SubMatrixValue[i][j] = SubMatrixValue[i - 1][j] + a[i][j];
 			}
 		}
-		return maxLength;
+		//求出了1——>m行每一列的子数组中每一列的和
+		int max = SubMatrixValue[0][0];
+		int cur = SubMatrixValue[0][0];
+		for (int k = -1; k < m; k++)
+		{
+		
+			for (int i = k + 1; i < m; i++)
+			{
+				if (k != -1)
+				{
+					for (int j = 0; j < n; j++)
+					{
+						SubMatrixValue[i][j] -= SubMatrixValue[k][j];
+					}
+				}
+				cur = SubMatrixValue[i][0];
+				for (int j = 0; j < n; j++)
+				{
+					if (i != 0)
+						cur += SubMatrixValue[i][j];
+					else
+						cur = SubMatrixValue[i][0];
+					if (cur > max)
+						max = cur;
+					if (cur < 0)
+						cur = 0;
+				}
+			}
+		}
+		return max;
 	}
 };
+
+
+
+
+
