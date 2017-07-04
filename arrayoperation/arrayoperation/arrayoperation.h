@@ -345,60 +345,208 @@
 //};
 
 //给定一个无序矩阵(Matrix)，其中有正，有负，有 0，求子矩阵的最大和
-#define  M 100
-#define  N 100
-class Solution
-{
+//#define  M 100
+//#define  N 100
+//class Solution
+//{
+//public:
+//	int SubMatrixMax(int a[4][4], int m, int n)
+//	{
+//		if (a == NULL)
+//			return 0;
+//		int SubMatrixValue[M][N] = { 0 };
+//		for (int i = 0; i < m; i++)
+//		{
+//			for (int j = 0; j < n; j++)
+//			{
+//				if (i == 0)
+//					SubMatrixValue[i][j] = a[i][j];
+//				else
+//					SubMatrixValue[i][j] = SubMatrixValue[i - 1][j] + a[i][j];
+//			}
+//		}
+//		//求出了1——>m行每一列的子数组中每一列的和
+//		int max = SubMatrixValue[0][0];
+//		int cur = SubMatrixValue[0][0];
+//		for (int k = -1; k < m; k++)
+//		{
+//		
+//			for (int i = k + 1; i < m; i++)
+//			{
+//				if (k != -1)
+//				{
+//					for (int j = 0; j < n; j++)
+//					{
+//						SubMatrixValue[i][j] -= SubMatrixValue[k][j];
+//					}
+//				}
+//				cur = SubMatrixValue[i][0];
+//				for (int j = 0; j < n; j++)
+//				{
+//					if (i != 0)
+//						cur += SubMatrixValue[i][j];
+//					else
+//						cur = SubMatrixValue[i][0];
+//					if (cur > max)
+//						max = cur;
+//					if (cur < 0)
+//						cur = 0;
+//				}
+//			}
+//		}
+//		return max;
+//	}
+//};
+
+
+
+//给定一个无序数组 arr，其中元素可正、可负、可 0，给定一个整数 k。
+//求arr所有的子数组中累加和为 k 的最长子数组长度。
+//class Solution
+//{
+//public:
+//	int SubSumK(int*  a, int n)
+//	{
+//		if (a == NULL || n <= 0)
+//			return 0;
+//		int cur = a[0];  //cur代表到当前位置,子数组的累加和
+//		int max = a[0]; //max代表到当前位置,子数组的最大累加和
+//		vector<int> v;
+//		for (int i = 0; i < n; i++)
+//		{
+//			if (i == 0)
+//				cur = a[0];
+//			else
+//				cur += a[i];
+//			cur = cur>0 ? cur : 0;
+//			max = max > cur ? max : cur;
+//			v.push_back(max);
+//		}
+//		for (int i = 0; i < n; i++)
+//		{
+//
+//		}
+//	}
+//};
+
+
+//数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
+//例如输入一个长度为9的数组{ 1, 2, 3, 2, 2, 2, 5, 4, 2 }。
+//由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
+//class Solution {
+//public:
+//	int MoreThanHalfNum_Solution(vector<int> numbers) {
+//		int Size = numbers.size();
+//		map<int, int> countNumber;
+//		for (int i = 0; i < Size; i++)
+//		{
+//			countNumber[numbers[i]]++;
+//			if (Size % 2 == 0)
+//			{
+//				if (countNumber[numbers[i]] > Size / 2)
+//					return numbers[i];
+//			}
+//			else
+//			{
+//				if (countNumber[numbers[i]] >= (Size + 1) / 2)
+//					return numbers[i];
+//			}
+//		}
+//		return 0;
+//	}
+//};
+
+
+//旋转数组的最小值
+//class Solution {
+//public:
+//	int minNumberInRotateArray(vector<int> rotateArray) {
+//		int Size = rotateArray.size();
+//		if (Size == 0)
+//			return 0;
+//		int temp = rotateArray[0];
+//		int i = 1;
+//		while (i<Size)
+//		{
+//			if (temp>rotateArray[i])
+//				return rotateArray[i];
+//			temp = rotateArray[i];
+//			i++;
+//		}
+//		return rotateArray[0];
+//	}
+//};
+
+//class Solution {
+//public:
+//	int InversePairs(vector<int> data) {
+//		int i = 0;
+//		int count = 0;
+//		for (size_t i = 0; i < data.size()/2; i++)
+//		{
+//			for (size_t j = i + 1; j < data.size(); j++)
+//			{
+//				if (data[i] < data[j])
+//					count++;
+//			}
+//		}
+//		return count % 1000000007;
+//	}
+//};
+//
+
+class Solution {
 public:
-	int SubMatrixMax(int a[4][4], int m, int n)
+	void FindNumsAppearOnce(vector<int> data, int* num1, int *num2) 
 	{
-		if (a == NULL)
-			return 0;
-		int SubMatrixValue[M][N] = { 0 };
-		for (int i = 0; i < m; i++)
+		map<int, pair<int,int*>>  countNumber;
+		int Size = data.size();
+		if (Size == 0)
+			return;
+		int count = 0;
+		cout << &data[0] << endl;
+		cout << &data[Size-1] << endl;
+		for (int i = 0; i < Size; i++)
 		{
-			for (int j = 0; j < n; j++)
+			countNumber[data[i]].first++;
+			countNumber[data[i]].second = &data[i];
+		}
+		map<int, pair<int, int*>>::iterator it = countNumber.begin();
+		while (it != countNumber.end())
+		{
+			if (it->second.first == 1)
 			{
-				if (i == 0)
-					SubMatrixValue[i][j] = a[i][j];
+				if (count == 0)
+				{
+					num1 = it->second.second;
+					count++;
+				}
 				else
-					SubMatrixValue[i][j] = SubMatrixValue[i - 1][j] + a[i][j];
-			}
-		}
-		//求出了1——>m行每一列的子数组中每一列的和
-		int max = SubMatrixValue[0][0];
-		int cur = SubMatrixValue[0][0];
-		for (int k = -1; k < m; k++)
-		{
-		
-			for (int i = k + 1; i < m; i++)
-			{
-				if (k != -1)
 				{
-					for (int j = 0; j < n; j++)
-					{
-						SubMatrixValue[i][j] -= SubMatrixValue[k][j];
-					}
-				}
-				cur = SubMatrixValue[i][0];
-				for (int j = 0; j < n; j++)
-				{
-					if (i != 0)
-						cur += SubMatrixValue[i][j];
-					else
-						cur = SubMatrixValue[i][0];
-					if (cur > max)
-						max = cur;
-					if (cur < 0)
-						cur = 0;
+					num2 = it->second.second;
+					break;
 				}
 			}
+			it++;
 		}
-		return max;
+		if (num1 > num2&&num2 != NULL)
+			swap(num1, num2);
+		cout << num1 << endl;
+		cout << num2 << endl;
+		return;
 	}
 };
 
 
+//我们可以用2 * 1的小矩形横着或者竖着去覆盖更大的矩形。
+//请问用n个2 * 1的小矩形无重叠地覆盖一个2 * n的大矩形，总共有多少种方法？
+//class Solution {
+//public:
+//	int rectCover(int number) 
+//	{
+//
+//	}
+//};
 
 
 

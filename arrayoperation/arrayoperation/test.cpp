@@ -83,12 +83,33 @@ int main()
 	////
 	//	cout << a.SubArrayMaxLegth(arr, sizeof(arr) / sizeof(arr[0]), 5) << endl;
 	
-	//子矩阵最大和问题
+//	//子矩阵最大和问题
+//	Solution a;
+////	int arr[][4] = { { 1, 2, 4, -8 }, { -2, -4, -8, 10 }, { -3, 5, 6, 9 }, { -4, 3, 2, 11 } };
+//	int arr[][4] = { { -1, -2, -4, -8 }, { -2, -4, -8, -10 }, { -3, -5, -6, -9 }, { -4, -3, -2, -11 } };
+//
+//	cout << a.SubMatrixMax(arr, 4, 4) << endl;
+
+	//给定旋转数组，求最小值
+	/*Solution a;
+	int arr[] = { 3, 4, 5, 1, 2 };
+	vector<int> v;
+	for (size_t i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		v.push_back(arr[i]);
+	}
+	cout << a.minNumberInRotateArray(v) << endl;*/
+
+	//求数组中两个只出现一次的数据
 	Solution a;
-//	int arr[][4] = { { 1, 2, 4, -8 }, { -2, -4, -8, 10 }, { -3, 5, 6, 9 }, { -4, 3, 2, 11 } };
-	int arr[][4] = { { -1, -2, -4, -8 }, { -2, -4, -8, -10 }, { -3, -5, -6, -9 }, { -4, -3, -2, -11 } };
-
-	cout << a.SubMatrixMax(arr, 4, 4) << endl;
-
+	int arr[] = { 3, 4, 5, 4, 5, 2 ,2,7};
+	int *num1 = NULL;
+	int *num2 = NULL;
+	vector<int> v;
+	for (size_t i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		v.push_back(arr[i]);
+	}
+	a.FindNumsAppearOnce(v, num1, num2);
 	return 0;
 }
