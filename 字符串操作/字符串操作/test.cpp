@@ -3,11 +3,19 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <algorithm>
 using namespace std;
 #include "stringoperation.h"
 int main()
 {
 	Solution a;
-	cout << a.LeftRotateString("1234", 4) << endl;
+	a.Insert('a');
+	a.Insert('b');
+	a.Insert('c');
+	a.Insert('a');
+	a.Insert('b');
+	a.Insert('c');
+	a.Insert('e');
+	cout << a.FirstAppearingOnce() << endl;
 	return 0;
 }
