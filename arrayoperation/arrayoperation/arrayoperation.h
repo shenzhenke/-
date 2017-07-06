@@ -477,76 +477,264 @@
 //	}
 //};
 
+
+
+//找出数组中两个不相同的数据
 //class Solution {
 //public:
-//	int InversePairs(vector<int> data) {
-//		int i = 0;
+//	void FindNumsAppearOnce(vector<int> data, int* num1, int *num2) 
+//	{
+//		map<int, pair<int,int*>>  countNumber;
+//		int Size = data.size();
+//		if (Size == 0)
+//			return;
 //		int count = 0;
-//		for (size_t i = 0; i < data.size()/2; i++)
+//		cout << &data[0] << endl;
+//		cout << &data[Size-1] << endl;
+//		for (int i = 0; i < Size; i++)
 //		{
-//			for (size_t j = i + 1; j < data.size(); j++)
-//			{
-//				if (data[i] < data[j])
-//					count++;
-//			}
+//			countNumber[data[i]].first++;
+//			countNumber[data[i]].second = &data[i];
 //		}
-//		return count % 1000000007;
+//		map<int, pair<int, int*>>::iterator it = countNumber.begin();
+//		while (it != countNumber.end())
+//		{
+//			if (it->second.first == 1)
+//			{
+//				if (count == 0)
+//				{
+//					num1 = it->second.second;
+//					count++;
+//				}
+//				else
+//				{
+//					num2 = it->second.second;
+//					break;
+//				}
+//			}
+//			it++;
+//		}
+//		if (num1 > num2&&num2 != NULL)
+//			swap(num1, num2);
+//		cout << num1 << endl;
+//		cout << num2 << endl;
+//		return;
 //	}
 //};
-//
+
+
+//输入一个递增排序的数组和一个数字S，
+//在数组中查找两个数，是的他们的和正好是S，
+//如果有多对数字的和等于S，输出两个数的乘积最小的。
+//class Solution {
+//public:
+//	vector<int> FindNumbersWithSum(vector<int> array, int sum) 
+//	{
+//		vector<int> v;
+//		size_t left = 0;
+//		size_t right = array.size() - 1;
+//		for (; left < array.size(); left++)
+//		{
+//			right = array.size() - 1;
+//			while (left < right)
+//			{
+//				if (array[left] + array[right] < sum)
+//					break;
+//				else if (array[left] + array[right] == sum)
+//				{
+//					v.push_back(array[left]);
+//					v.push_back(array[right]);
+//					return v;
+//				}
+//				else
+//				{
+//					right--;
+//				}
+//			}
+//		}
+//		return v;
+//	}
+//};
+
+//每年六一儿童节, 牛客都会准备一些小礼物去看望孤儿院的小朋友, 今年亦是如此。HF作为牛客的资深元老, 自然也准备了一些小游戏。其中, 有个游戏是这样的:首先, 让小朋友们围成一个大圈。然后, 他随机指定一个数m, 让编号为0的小朋友开始报数。每次喊到m - 1的那个小朋友要出列唱首歌, 然后可以在礼品箱中任意的挑选礼物, 并且不再回到圈中, 从他的下一个小朋友开始, 继续0...m - 1报数....这样下去....
+//直到剩下最后一个小朋友, 可以不用表演, 并且拿到牛客名贵的“名侦探柯南”典藏版
+//(名额有限哦!!^_^)。请你试着想下, 哪个小朋友会得到这份礼品呢？(注：小朋友的编号是从0到n - 1)
+
+//class Sloution
+//{
+//public:
+//	int LastRemaining_Solution(int n, int m)
+//	{
+//		int *arr = new int[n];
+//		for (int i = 0; i < n; i++)
+//			arr[i] = 1;
+//		m = m%n;
+//		int num = m;
+//		int count = n;
+//		int index = 0;
+//		while (count != 1)
+//		{
+//			m--;
+//			if (m == 0)
+//			{
+//				arr[index] = 0;
+//				count--;
+//				while (arr[index] == 0)
+//				{
+//					index++;
+//					if (index == n)
+//						index = 0;
+//				}
+//				m = num;
+//			}
+//			else
+//			{
+//				if (arr[index] != 0)
+//				{
+//					index++;
+//					if (index == n)
+//						index = 0;
+//				}
+//				while (arr[index] == 0)
+//				{
+//					index++;
+//					if (index == n)
+//						index = 0;
+//				}
+//			}
+//			
+//		}
+//		for (int i = 0; i < n; i++)
+//		{
+//			if (arr[i] == 1)
+//				return i;
+//		}
+//		return -1;
+//	}
+//};
+
 
 class Solution {
 public:
-	void FindNumsAppearOnce(vector<int> data, int* num1, int *num2) 
+	int LastRemaining_Solution(int n, int m)
 	{
-		map<int, pair<int,int*>>  countNumber;
-		int Size = data.size();
-		if (Size == 0)
-			return;
-		int count = 0;
-		cout << &data[0] << endl;
-		cout << &data[Size-1] << endl;
-		for (int i = 0; i < Size; i++)
-		{
-			countNumber[data[i]].first++;
-			countNumber[data[i]].second = &data[i];
-		}
-		map<int, pair<int, int*>>::iterator it = countNumber.begin();
-		while (it != countNumber.end())
-		{
-			if (it->second.first == 1)
-			{
-				if (count == 0)
-				{
-					num1 = it->second.second;
-					count++;
-				}
-				else
-				{
-					num2 = it->second.second;
-					break;
-				}
-			}
-			it++;
-		}
-		if (num1 > num2&&num2 != NULL)
-			swap(num1, num2);
-		cout << num1 << endl;
-		cout << num2 << endl;
-		return;
-	}
+	
+ 	}
 };
 
 
-//我们可以用2 * 1的小矩形横着或者竖着去覆盖更大的矩形。
-//请问用n个2 * 1的小矩形无重叠地覆盖一个2 * n的大矩形，总共有多少种方法？
-//class Solution {
-//public:
-//	int rectCover(int number) 
-//	{
+
+//顺时针从外到里打印矩形
+
 //
+//class Solution
+//{
+//public:
+//	vector<int> printMatrix(vector<vector<int> > matrix){
+//		vector<int> v;
+//	 	int k = 0;
+//		int  p = 0;
+//		int m = matrix.size();
+//		int n = matrix[0].size();
+//		while (k < (matrix[0].size()+1)/ 2 && p <(matrix.size()+1) / 2)
+//		{
+//			//打印第一行
+//			for (int j = p; j < n; j++)
+//			{
+//				v.push_back(matrix[p][j]);
+//				if (v.size() == matrix.size()*matrix[0].size())
+//					return v;
+//			}
+//			p++;
+//
+//			//打印最后一列
+//			for (int i = p; i < m; i++)
+//			{
+//				v.push_back(matrix[i][n - 1]);
+//				if (v.size() == matrix.size()*matrix[0].size())
+//					return v;
+//			}
+//			m--;
+//			//打印最后一行
+//			for (int j = n - 1; j >= p; j--)
+//			{
+//				v.push_back(matrix[m][j - 1]);
+//				if (v.size() == matrix.size()*matrix[0].size())
+//					return v;
+//			}
+//			n--;
+//			//打印第一列
+//			for (int i = m - 1; i > k; i--)
+//			{
+//				v.push_back(matrix[i][k]);
+//				if (v.size() == matrix.size()*matrix[0].size())
+//					return v;
+//			}
+//			k++;
+//		}
+//		return v;
 //	}
 //};
+
+
+//小明很喜欢数学, 有一天他在做数学作业时, 要求计算出9~16的和, 
+//他马上就写出了正确答案是100。但是他并不满足于此, 
+//他在想究竟有多少种连续的正数序列的和为100(至少包括两个数)。
+//没多久, 他就得到另一组连续正数和为100的序列:18, 19, 20, 21, 22。
+//现在把问题交给你, 你能不能也很快的找出所有和为S的连续正数序列 ? Good Luck!
+//class Solution 
+//{
+//public:
+//	vector<vector<int> > FindContinuousSequence(int sum) 
+//	{
+//		vector<vector<int> > v;
+//		if (sum <= 2)
+//			return v;
+//		const int Size = sum / 2 + 2;
+//		int* arr = new int[Size];
+//		for (int i = 0; i < Size; i++)
+//		{
+//			arr[i] = i + 1;
+//		}
+//		int count = 0;
+//		int left = 0;
+//		int right = 0;
+//		int cur = 0;
+//		while ((right < Size) && (left <= right))
+//		{
+//			if (cur > sum)
+//			{
+//				cur -= arr[left];
+//				left++;
+//			}
+//			else if (cur < sum)
+//			{
+//				cur += arr[right];
+//				right++;
+//			}
+//			else  
+//			{
+//				vector<int> SumS;
+//				int i = left;
+//				int j = right;
+//				while (i < j)
+//				{
+//					SumS.push_back(arr[i]);
+//					i++;
+//				}
+//				v.push_back(SumS);
+//				count++;
+//				if (right < Size)
+//					cur += arr[right];
+//				right++;
+//			}		
+//		}
+//		delete[] arr;
+//		return v;
+//	}
+//};
+
+
 
 
 

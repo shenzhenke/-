@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include <map>
+#include <list>
 using namespace std;
 #include "arrayoperation.h"
 int main()
@@ -18,6 +19,7 @@ int main()
 	//v.push_back(3);
 	//Gift gift;
 	//cout << gift.getValue(v, v.size()) << endl;
+
 
 
 	//vector<vector<int> > array(5);
@@ -101,7 +103,7 @@ int main()
 	cout << a.minNumberInRotateArray(v) << endl;*/
 
 	//求数组中两个只出现一次的数据
-	Solution a;
+	/*Solution a;
 	int arr[] = { 3, 4, 5, 4, 5, 2 ,2,7};
 	int *num1 = NULL;
 	int *num2 = NULL;
@@ -110,6 +112,46 @@ int main()
 	{
 		v.push_back(arr[i]);
 	}
-	a.FindNumsAppearOnce(v, num1, num2);
+	a.FindNumsAppearOnce(v, num1, num2);*/
+
+	//求升序数组中两个数为s的最小乘积
+	//Solution a;
+	////int arr[] = { 3, 4, 5, 6, 7, 8, 9, 10 };
+	//int arr[] = { 3, 4 };
+	//vector<int> v;
+	//for (size_t i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	//{
+	//	v.push_back(arr[i]);
+	//}
+	//vector<int> t;
+	//t = a.FindNumbersWithSum(v, 13);
+	//if (t.size() != 0)
+	//{
+	//	cout << t[0] << endl;
+	//	cout << t[1] << endl;
+	//}
+
+//约瑟夫环问题
+	Solution a;
+	cout << a.LastRemaining_Solution(5, 3) << endl;
 	return 0;
+
+
+//顺时针打印矩阵问题
+	/*int arr[][4] = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } };
+	vector<vector<int> > v(4);
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			v[i].push_back(arr[i][j]);
+		}
+	}
+	Solution a;
+	vector<int> t = a.printMatrix(v);*/
+	
+
+//和为s的连续正数序列
+//Solution a;
+//a.FindContinuousSequence(49);
 }
