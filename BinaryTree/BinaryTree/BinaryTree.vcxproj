@@ -65,6 +65,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryT.hpp" />
     <ClInclude Include="BinaryTree.hpp" />
     <ClInclude Include="BinaryTreeNR.hpp" />
     <ClInclude Include="BinaryTreeThread.hpp" />

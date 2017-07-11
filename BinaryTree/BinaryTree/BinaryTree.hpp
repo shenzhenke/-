@@ -165,8 +165,17 @@ public:
 	//求二叉树的深度
 	size_t Depth()
 	{
+		map<Node*, int> s;
+		int high = 0;
 		if (_root)
-			return _Depth(_root);
+			high = _Depth(_root, s);
+		vector<vector<int> > v(3);
+		map<Node*, int>::iterator it = s.begin();
+		while (it != s.end())
+		{
+			v[high-(it->second) ].push_back((it->first)->_data);
+			it++;
+		}
 		return 0;
 	}
 protected:
@@ -251,7 +260,8 @@ protected:
 		return count;
 	}
 
-	size_t _Depth(Node* root)
+
+	/*size_t _Depth(Node* root)
 	{
 		if (root == NULL)
 			return 0;
@@ -260,7 +270,21 @@ protected:
 		size_t R_Depth = 1;
 		R_Depth += _Depth(root->_right);
 		return L_Depth > R_Depth ? L_Depth : R_Depth;
-	}
+	}*/
+
+size_t  _Depth(Node* root, map<Node*, int> & s)
+{
+	if (root == NULL)
+		return 0;
+	size_t L_Depth = 1;
+	L_Depth += _Depth(root->_left, s);
+	size_t R_Depth = 1;
+	R_Depth += _Depth(root->_right, s);
+	size_t Depth = L_Depth > R_Depth ? L_Depth : R_Depth;
+	s[root] = Depth;
+	return Depth;
+}
+
 
 	//第k层左子树+第k层右子树的结点的个数
 	size_t _GetKLevel(Node* root, size_t k)
@@ -298,16 +322,19 @@ void TestBinaryTree()
 {
 	int array[] = { 1, 2, 3, '*', '*', 4, '*', '*', 5, 6,'*','*',7 };
 	BinaryTree<int> t(array,sizeof(array)/sizeof(array[0]),'*');
-	BinaryTree<int> t1(t); 
-	t.PrevOrder();                            // 先序遍历
-	t.InOrder();                             //  中序遍历
-	t.PostOrder();                          //   后序遍历
-	t.LevelOrder();                        //    层序遍历
-	cout << t.Size() << endl;              //    二叉树结点个数
-	cout << t.LeafSize() << endl;         //     二叉树叶子结点的个数
-	cout << t.GetKLevel(3) << endl;      //      二叉树第k层的结点的个数
-	cout << t.Depth() << endl;          //       二叉树的深度
-	BinaryTreeNode<int>* node = t.Find(2);
-	BinaryTree<int> t2;
-	t2 = t;                          
+	t.InOrder();
+	t.PostOrder();
+	t.PrevOrder();
+	//BinaryTree<int> t1(t); 
+	//t.PrevOrder();                            // 先序遍历
+	//t.InOrder();                             //  中序遍历
+	//t.PostOrder();                          //   后序遍历
+	//t.LevelOrder();                        //    层序遍历
+	//cout << t.Size() << endl;              //    二叉树结点个数
+	//cout << t.LeafSize() << endl;         //     二叉树叶子结点的个数
+	//cout << t.GetKLevel(3) << endl;      //      二叉树第k层的结点的个数
+	t.Depth();          //       二叉树的深度
+	//BinaryTreeNode<int>* node = t.Find(2);
+	//BinaryTree<int> t2;
+	//t2 = t;                          
 }

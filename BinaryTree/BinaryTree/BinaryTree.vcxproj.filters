@@ -24,6 +24,9 @@
     <ClInclude Include="BinaryTreeThread.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BinaryT.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp">
