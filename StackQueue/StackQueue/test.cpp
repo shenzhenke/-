@@ -8,9 +8,9 @@ using namespace std;
 #include "stack.h"
 int main()
 {
-	//TestSepicalStack();
+	TestSepicalStack();
 	//TestSortStack();
 	//TestIsCorrectPopStack();
-	TestfindMaxInWindows();
+	//TestfindMaxInWindows();
 	return 0;
 }

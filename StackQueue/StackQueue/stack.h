@@ -6,13 +6,14 @@ class SepicalStack
 public:
 	void push(int value)
 	{
-		data.push(value);
-		if (true == minData.empty() || value <= minData.top())
+		data.push(value);   //s
+		if (true == minData.empty() || value <= minData.top())//min
 			minData.push(value);
 	}
 	void pop()
 	{
-		if (data.top() == minData.top())
+		assert(data.empty() != true); //s
+		if (data.top() == minData.top())//
 			minData.pop();
 		data.pop();
 	}
@@ -30,30 +31,31 @@ private:
 void TestSepicalStack()
 {
 	SepicalStack s;
-	s.push(5);
-	cout << s.getMin() << endl;
-	s.push(3);
-	cout << s.getMin() << endl;
-	s.push(3);
-	cout << s.getMin() << endl;
 	s.push(4);
-	cout << s.getMin() << endl;
-	s.push(6);
-	cout << s.getMin() << endl;
-	s.push(2);
-	cout << s.getMin() << endl;
+	//cout << s.getMin() << endl;
 	s.push(1);
-	cout << s.getMin() << endl;
+	//cout << s.getMin() << endl;
+	s.push(5);
+	//cout << s.getMin() << endl;
+	s.push(7);
+	//cout << s.getMin() << endl;
+	//s.push(6);
+	//cout << s.getMin() << endl;
+	//s.push(2);
+	//cout << s.getMin() << endl;
+	//s.push(1);
+	//cout << s.getMin() << endl;
 	s.pop();
-	cout << s.getMin() << endl;
+	//cout << s.getMin() << endl;
 	s.pop();
-	cout << s.getMin() << endl;
+	//cout << s.getMin() << endl;
 	s.pop();
-	cout << s.getMin() << endl;
+	//cout << s.getMin() << endl;
 	s.pop();
-	cout << s.getMin() << endl;
-	s.pop();
-	cout << s.getMin() << endl;
+	//cout << s.getMin() << endl;
+	//s.pop();
+	//cout << s.getMin() << endl;
+	//cout << minData.top() << endl;
 }
 
 
@@ -63,52 +65,52 @@ void TestSepicalStack()
 //只能申请新的变量,但不能申请额外的数据结构
 
 
-class  StackSortByStack
-{
-public:
-	stack<int> SortStack(stack<int> data)
-	{
-		stack<int> sortData;
-		while (!data.empty())
-		{
-			int cur = data.top();
-			data.pop();
-			if (true == sortData.empty() || cur <= sortData.top())
-				sortData.push(cur);
-			else
-			{
-				while (!sortData.empty() && cur > sortData.top())
-				{
-					int min = sortData.top();
-					sortData.pop();
-					data.push(min);
-				}
-				sortData.push(cur);
-			}
-		}
-		return sortData;
-	}
-};
-
-
-void TestSortStack()
-{
-	stack<int> s;
-	s.push(4);
-	s.push(5);
-	s.push(3);
-	s.push(6);
-	s.push(3);
-	s.push(1);
-	StackSortByStack sort;
-	s = sort.SortStack(s);
-	while (!s.empty())
-	{
-		cout << s.top() << endl;
-		s.pop();
-	}
-}
-
+//class  StackSortByStack
+//{
+//public:
+//	stack<int> SortStack(stack<int> data)
+//	{
+//		stack<int> sortData;
+//		while (!data.empty())
+//		{
+//			int cur = data.top();
+//			data.pop();
+//			if (true == sortData.empty() || cur <= sortData.top())
+//				sortData.push(cur);
+//			else
+//			{
+//				while (!sortData.empty() && cur > sortData.top())
+//				{
+//					int min = sortData.top();
+//					sortData.pop();
+//					data.push(min);
+//				}
+//				sortData.push(cur);
+//			}
+//		}
+//		return sortData;
+//	}
+//};
+//
+//
+//void TestSortStack()
+//{
+//	stack<int> s;
+//	s.push(4);
+//	s.push(5);
+//	s.push(3);
+//	s.push(6);
+//	s.push(3);
+//	s.push(1);
+//	StackSortByStack sort;
+//	s = sort.SortStack(s);
+//	while (!s.empty())
+//	{
+//		cout << s.top() << endl;
+//		s.pop();
+//	}
+//}
+//
 
 
 
