@@ -59,6 +59,50 @@ public:
 		}
 		cout << endl;
 	}
+
+	//找倒数第K个结点
+	Node* findLastKthNode(int lastKth)
+	{
+		int lastNodeIndex = 0;
+		//如果倒数第K个结点不在所表示的位置超过链表的长度或小于链表的长度以返回NULL表示
+		Node* lastKthNode = NULL;
+	    _findLastKthNode(_head, lastKth,lastNodeIndex,lastKthNode);
+		return lastKthNode;
+	}
+	void _findLastKthNode(Node* cur, int lastKth,int &lastNode,Node* &lastKthNode)
+	{
+		if (cur == NULL)
+			return;
+		_findLastKthNode(cur->_next, lastKth, lastNode, lastKthNode);
+		lastNode++;
+		if (lastNode == lastKth)
+			lastKthNode = cur;
+		return;
+	}
+
+	//逆置链表
+	Node* reverseList()
+	{
+		if (_head == NULL || _head->_next == NULL)
+			return _head;
+		Node* cur = _head;
+		Node* next = NULL;
+		Node* prev = NULL;
+		while (_head != NULL)
+		{
+			cur = _head;
+			next = cur->_next;
+			cur->_next = prev;
+			prev = cur;
+			if (next == NULL)
+				break;
+			_head = next;
+		}
+		return _head;
+	}
+
+
+
 	void removeLastKthNode(int lastKth)  //删除倒数第K个结点
 	{
 		Node* cur = _head;
@@ -126,9 +170,25 @@ private:
 	Node* _head;
 };
 
+class Solution {
+public:
+	int Add(int num1, int num2)
+	{
+		//&取相同位，左移一位代表相加,^取不同位 
+		while (num2 != 0)
+		{
+			int sum = (num1^num2);
+			num2 = ((num1&num2) << 1);
+			num1 = sum;
+		}
+		return num1;
+	}
+};
 void TestList()
 {
-	List l;
+	Solution a;
+	cout << a.Add(10, 9) << endl;
+	/*List l;
 	l.Push_back(1);
 	l.Push_back(2);
 	l.Push_back(3);
@@ -136,13 +196,20 @@ void TestList()
 	l.Push_back(5);
 	l.Push_back(6);
 	l.Push_back(7);
+	l.Push_back(8);
+
+	l.Print();
+	l.reverseList();
+	l.Print();*/
+	//ListNode* cur = l.findLastKthNode(8);
+	//if (cur != NULL)
+	//	cout << cur->_value << endl;
+	/*l.removeMidNode();
 	l.Print();
 	l.removeMidNode();
 	l.Print();
 	l.removeMidNode();
-	l.Print();
-	l.removeMidNode();
-	l.Print();
+	l.Print();*/
 }
 int main()
 {
