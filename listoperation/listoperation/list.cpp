@@ -21,12 +21,12 @@ public:
 		:_head(NULL)
 	{
 	}
-	void Push_back(int value)
+	Node* Push_back(int value)
 	{
 		if (_head == NULL)
 		{
 			_head = new Node(value);
-			return;
+			return _head;
 		}
 		Node* cur = _head;
 		while (cur->_next != NULL)
@@ -35,7 +35,7 @@ public:
 		}
 		Node* newNode = new Node(value);
 		cur->_next = newNode;
-		return;
+		return newNode;
 	}
 	void Print()
 	{
@@ -166,6 +166,39 @@ public:
 		return;
 	}
 
+
+	//返回环的长度和环的入口结点
+	pair<ListNode*,int> EntryNodeOfLoop(ListNode* pHead)
+	{
+		Node* slow = pHead;
+		Node* fast = pHead;
+		Node* None = NULL;
+		int count = 0;
+		while (slow != NULL && fast->_next != NULL)
+		{
+			//利用快慢指针判环
+			slow = slow->_next;
+			fast = fast->_next->_next;
+			if (fast == slow) //证明有环
+			{
+				//将快慢指针任意一个从头结点开始走,二者按一步一节点的速度相遇就是环的入口点
+				slow = pHead;
+				while (slow != fast)
+				{
+					slow = slow->_next;
+					fast = fast->_next;
+				}
+				while (slow->_next != fast)
+				{
+					count++;
+					slow = slow->_next;
+				}
+				return make_pair(fast, count + 1);
+			}
+		}
+		return make_pair(None,0);
+	}
+
 private:
 	Node* _head;
 };
@@ -186,20 +219,22 @@ public:
 };
 void TestList()
 {
-	Solution a;
-	cout << a.Add(10, 9) << endl;
-	/*List l;
-	l.Push_back(1);
+	//Solution a;
+	//cout << a.Add(10, 9) << endl;
+	List l;
+	ListNode* pHead=l.Push_back(1);
 	l.Push_back(2);
 	l.Push_back(3);
-	l.Push_back(4);
+	ListNode* first = l.Push_back(4);
 	l.Push_back(5);
 	l.Push_back(6);
 	l.Push_back(7);
-	l.Push_back(8);
-
-	l.Print();
-	l.reverseList();
+	ListNode* second = l.Push_back(8);
+	second->_next = first;
+	pair<ListNode*, int> Pair = l.EntryNodeOfLoop(pHead);
+	cout << Pair.first->_value << endl;
+	cout << Pair.second << endl;
+	/*l.reverseList();
 	l.Print();*/
 	//ListNode* cur = l.findLastKthNode(8);
 	//if (cur != NULL)
