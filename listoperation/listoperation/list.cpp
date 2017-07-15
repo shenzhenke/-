@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS 
+﻿#define _CRT_SECURE_NO_WARNINGS 
 #include <iostream>
 #include <stack>
 using namespace std;
@@ -60,11 +60,11 @@ public:
 		cout << endl;
 	}
 
-	//�ҵ�����K�����
+	//找倒数第K个结点
 	Node* findLastKthNode(int lastKth)
 	{
 		int lastNodeIndex = 0;
-		//���������K����㲻������ʾ��λ�ó��������ĳ��Ȼ�С�������ĳ����Է���NULL��ʾ
+		//如果倒数第K个结点不在所表示的位置超过链表的长度或小于链表的长度以返回NULL表示
 		Node* lastKthNode = NULL;
 	    _findLastKthNode(_head, lastKth,lastNodeIndex,lastKthNode);
 		return lastKthNode;
@@ -80,7 +80,7 @@ public:
 		return;
 	}
 
-	//��������
+	//逆置链表
 	Node* reverseList()
 	{
 		if (_head == NULL || _head->_next == NULL)
@@ -103,7 +103,7 @@ public:
 
 
 
-	void removeLastKthNode(int lastKth)  //ɾ��������K�����
+	void removeLastKthNode(int lastKth)  //删除倒数第K个结点
 	{
 		Node* cur = _head;
 		stack<Node*> s;
@@ -140,7 +140,7 @@ public:
 		return;
 	}
 
-	void removeMidNode()  //ɾ���м��� ���ÿ���ָ��
+	void removeMidNode()  //删除中间结点 采用快慢指针
 	{
 		if (_head == NULL || _head->_next == NULL)
 			return;
@@ -167,7 +167,7 @@ public:
 	}
 
 
-	//���ػ��ĳ��Ⱥͻ�����ڽ��
+	//返回环的长度和环的入口结点
 	pair<ListNode*,int> EntryNodeOfLoop(ListNode* pHead)
 	{
 		Node* slow = pHead;
@@ -176,12 +176,12 @@ public:
 		int count = 0;
 		while (slow != NULL && fast->_next != NULL)
 		{
-			//���ÿ���ָ���л�
+			//利用快慢指针判环
 			slow = slow->_next;
 			fast = fast->_next->_next;
-			if (fast == slow) //֤���л�
+			if (fast == slow) //证明有环
 			{
-				//������ָ������һ����ͷ��㿪ʼ��,���߰�һ��һ�ڵ���ٶ��������ǻ�����ڵ�
+				//将快慢指针任意一个从头结点开始走,二者按一步一节点的速度相遇就是环的入口点
 				slow = pHead;
 				while (slow != fast)
 				{
@@ -207,7 +207,7 @@ class Solution {
 public:
 	int Add(int num1, int num2)
 	{
-		//&ȡ��ͬλ������һλ�������,^ȡ��ͬλ 
+		//&取相同位，左移一位代表相加,^取不同位 
 		while (num2 != 0)
 		{
 			int sum = (num1^num2);
@@ -246,6 +246,59 @@ void TestList()
 	l.removeMidNode();
 	l.Print();*/
 }
+
+////将构造函数设置为私有的就可以使得该类不能被继承
+//class A
+//{
+//private:
+//	A()
+//	{}
+//	A~()
+//	{}
+//};
+//
+//class B :public A
+//{
+//public:
+//	B()
+//	{}
+//};
+
+//设置一个只能在堆上的类。。。
+//将构造函数定义为私有,提供一个获取对象的接口,
+//防止在外面通过拷贝构造（主要已有对象创建对象）和赋值运算符的重载（对象—对象）创建对象。
+//class A
+//{
+//public:
+//	static A*  createObj()
+//	{
+//		return new A;
+//	}
+//private:
+//	A()
+//	{}
+//	~A()
+//	{}
+//	A(const A&);
+//	A& operator=(const A&);
+//};
+
+
+//只有使用new运算符，对象才会建立在堆上，因此，
+//只要禁用new运算符就可以实现类对象只能建立在栈上。将operator new()设为私有即可
+//class A
+//{
+//private:
+//	void* operator new(size_t t)
+//	{}
+//	// 注意函数的第一个参数和返回值都是固定的
+//	void operator delete(void* ptr)
+//	{}
+//	// 重载了new就需要重载delete
+//public:
+//	A(){}
+//   ~A(){}
+//};
 int main()
 {
 	TestList();
