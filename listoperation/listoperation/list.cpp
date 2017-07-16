@@ -199,6 +199,101 @@ public:
 		return make_pair(None,0);
 	}
 
+	//判断两个链表是否相交，不带环
+	Node* ListIntersect(Node* pHead1, Node* pHead2)
+	{
+		if (pHead1 == pHead2)  //头结点一样
+			return pHead1;
+		if (pHead1 == NULL || pHead2 == NULL) 
+			return NULL;
+		stack<Node*> s1; //保存链表1的结点
+		stack<Node*> s2;
+		Node* cur = pHead1;
+		while (cur != NULL)
+		{
+			s1.push(cur);
+			cur = cur->_next;
+		}
+		cur = pHead2;
+		while (cur != NULL)
+		{
+			s2.push(cur);
+			cur = cur->_next;
+		}
+		if (s1.top() != s2.top()) //尾结点不一样
+		{
+			return NULL;
+		}
+		//链表一定有相交结点,且不为头结点
+		Node* prev = NULL;
+		while (s1.top()==s2.top())
+		{
+			prev = s1.top();
+			s1.pop();
+			s2.pop();
+		}
+		return prev;
+	}
+
+
+	Node* ListIntersectHasRing(Node* pHead1, Node* pHead2)
+	{
+		if (pHead1 == pHead2)  //头结点一样
+			return pHead1;
+		if (pHead1 == NULL || pHead2 == NULL)
+			return NULL;
+		pair<Node*, int>	RingNode1 = EntryNodeOfLoop(pHead1);  //entryNodeOfLoop用来判环的入口点
+		pair<Node*, int> RingNode2 = EntryNodeOfLoop(pHead2);
+		if (RingNode1.first == NULL&&RingNode2.first == NULL) //证明两个链表不带环
+			return  ListIntersect(pHead1, pHead2);
+		if ((RingNode1.first == NULL&&RingNode2.first != NULL) || 
+			(RingNode1.first != NULL&&RingNode2.first == NULL))  //一个带环一个不带环
+			return NULL;
+		//两个都带环
+		Node* cur = pHead1;
+		//是同一个环环的入口点一样但是交点可能在到环的入口点的路上
+		if (RingNode1.first == RingNode2.first)  //环的入口点一样的
+		{
+			stack<Node*>  s1;
+			stack<Node*>  s2;
+			while (cur != RingNode1.first->_next)  //可能交点就为环入口，所以要到下一个结点
+			{
+				s1.push(cur);
+				cur = cur->_next;
+			}
+			cur = pHead2;
+			while (cur != RingNode2.first->_next)
+			{
+				s2.push(cur);
+				cur = cur->_next;
+			}
+			Node* prev = NULL;
+			while (s1.top() == s2.top())
+			{
+				prev = s1.top();
+				s1.pop();
+				s2.pop();
+			}
+			return prev;
+		}
+		//判断是不是同一个环
+		int count = 0; //count用来记录cur经过RingNode环入口点的次数
+		cur = pHead1;
+		while (count!= 2) //经过自身的环入口点超过两次，证明两个在不同的环上
+		{
+			if (cur==RingNode1.first)  //证明经过自身的环入口点
+			{
+				count++;
+			}
+			if (cur == RingNode2.first)  //证明在同一个环上,随便返回环的哪一个入口点都可
+			{
+				return RingNode2.first;
+			}
+			cur = cur->_next;
+		}
+		return NULL;
+	}
+
 private:
 	Node* _head;
 };
@@ -229,11 +324,20 @@ void TestList()
 	l.Push_back(5);
 	l.Push_back(6);
 	l.Push_back(7);
-	ListNode* second = l.Push_back(8);
+	List l2;
+	ListNode* pHead1 = l2.Push_back(1);
+	l2.Push_back(2);
+	ListNode* second=l2.Push_back(3);
 	second->_next = first;
-	pair<ListNode*, int> Pair = l.EntryNodeOfLoop(pHead);
-	cout << Pair.first->_value << endl;
-	cout << Pair.second << endl;
+	cout << l.ListIntersect(pHead, pHead1)->_value << endl;
+
+
+
+	//ListNode* second = l.Push_back(8);
+	//second->_next = first;
+	//pair<ListNode*, int> Pair = l.EntryNodeOfLoop(pHead);
+	//cout << Pair.first->_value << endl;
+	//cout << Pair.second << endl;
 	/*l.reverseList();
 	l.Print();*/
 	//ListNode* cur = l.findLastKthNode(8);
