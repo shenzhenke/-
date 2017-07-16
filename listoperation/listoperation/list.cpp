@@ -1,7 +1,119 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS 
 #include <iostream>
 #include <stack>
+#include <vector>
 using namespace std;
+
+//struct RandomListNode 
+//{
+//	int label;
+//	struct RandomListNode *next, *random;
+//	RandomListNode(int x)
+//	:label(x)
+//	, next(NULL)
+//	, random(NULL) 
+//	{}
+//};
+//
+//class Solution {
+//public:
+//	typedef RandomListNode Node;
+//	RandomListNode* Clone(RandomListNode* pHead)
+//	{
+//		if (pHead == NULL)
+//			return NULL;
+//		Node* cur = pHead->next;
+//		Node* newHead = new Node(pHead->label);
+//		Node* newCur = newHead;
+//		vector<Node*> Random;
+//		vector<Node*> NewList;
+//		NewList.push_back(newHead);
+//		Random.push_back(pHead->random);
+//		while (cur != NULL)
+//		{
+//			Random.push_back(cur->random);
+//			Node* newNode = new Node(cur->label);
+//			newCur->next = newNode;
+//			newCur = newNode;
+//			NewList.push_back(newNode);
+//			cur = cur->next;
+//		}
+//		vector<int> RandomPosition;
+//		int count = 0;
+//		for (size_t i = 0; i < Random.size(); i++)
+//		{
+//			cur = pHead;
+//			count = 0;
+//			if (Random[i] == NULL)
+//			{
+//				RandomPosition.push_back(-1);
+//			}
+//			else
+//			{
+//				while (cur != NULL)
+//				{
+//					if (cur == Random[i])
+//					{
+//						RandomPosition.push_back(count);
+//						break;
+//					}
+//					cur = cur->next;
+//					count++;
+//				}
+//			}
+//		}
+//		for (size_t i = 0; i < NewList.size(); i++)
+//		{
+//			if (RandomPosition[i] == -1)
+//			{
+//				NewList[i]->random = NULL;
+//			}
+//			else
+//			{
+//				NewList[i]->random = NewList[RandomPosition[i]];
+//			}
+//		}
+//		return newHead;
+//	}
+//};
+//
+//void TestList()
+//{
+//	RandomListNode* pHead = new RandomListNode(1);
+//	RandomListNode* pHead1 = new RandomListNode(2);
+//	RandomListNode* pHead2 = new RandomListNode(3);
+//	RandomListNode* pHead3 = new RandomListNode(4);
+//	RandomListNode* pHead4 = new RandomListNode(5);
+//	RandomListNode* pHead5 = new RandomListNode(6);
+//	pHead->next = pHead1;
+//	pHead1->next = pHead2;
+//	pHead2->next = pHead3;
+//	pHead3->next = pHead4;
+//	pHead4->next = pHead5;
+//	pHead->random = pHead5;
+//	pHead1->random = pHead;
+//	pHead2->random = pHead3;
+//	Solution a;
+//	RandomListNode* newHead = a.Clone(pHead);
+//	while (pHead != NULL)
+//	{
+//		if (pHead->random != NULL&&newHead->random != NULL)
+//		{
+//			if (pHead->random->label != newHead->random->label
+//				|| pHead->label != newHead->label)
+//				cout << "bushi" << endl;
+//		}
+//		if (pHead->random == NULL&&newHead->random != NULL)
+//			cout << "bushi" << endl;
+//		if (newHead->random == NULL&&pHead->random != NULL)
+//			cout << "bushi" << endl;
+//		pHead = pHead->next;
+//		newHead = newHead->next;
+//	}
+//}
+
+
+
 struct ListNode
 {
 	ListNode* _next;
@@ -47,7 +159,7 @@ public:
 		}
 		cout << endl;
 	}
-	~List()
+	/*~List()
 	{
 		while (_head != NULL)
 		{
@@ -59,7 +171,7 @@ public:
 		}
 		cout << endl;
 	}
-
+*/
 	//找倒数第K个结点
 	Node* findLastKthNode(int lastKth)
 	{
@@ -81,7 +193,7 @@ public:
 	}
 
 	//逆置链表
-	Node* reverseList()
+	Node* reverseList(Node* _head)
 	{
 		if (_head == NULL || _head->_next == NULL)
 			return _head;
@@ -268,7 +380,7 @@ public:
 				cur = cur->_next;
 			}
 			Node* prev = NULL;
-			while (s1.top() == s2.top())
+			while (!s1.empty() && !s2.empty() && s1.top() == s2.top())
 			{
 				prev = s1.top();
 				s1.pop();
@@ -323,13 +435,18 @@ void TestList()
 	ListNode* first = l.Push_back(4);
 	l.Push_back(5);
 	l.Push_back(6);
-	l.Push_back(7);
-	List l2;
-	ListNode* pHead1 = l2.Push_back(1);
-	l2.Push_back(2);
-	ListNode* second=l2.Push_back(3);
+	ListNode* second= l.Push_back(7);
 	second->_next = first;
-	cout << l.ListIntersect(pHead, pHead1)->_value << endl;
+	List l2;
+	ListNode* pHead1 = l2.Push_back(8);
+	l2.Push_back(9);
+	ListNode* third=l2.Push_back(10);
+	third->_next = second;
+	if (l.ListIntersectHasRing(pHead, pHead1)!=NULL)
+	{
+		cout << l.ListIntersectHasRing(pHead, pHead1)->_value << endl;
+	}
+	cout <<"NONE"<<endl;
 
 
 
