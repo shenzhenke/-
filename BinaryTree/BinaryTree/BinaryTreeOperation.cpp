@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <stack>
 using namespace std;
 ////二叉树的高度,递归版
 //class Solution {
@@ -135,37 +136,125 @@ struct TreeNode
 	{}
 };
 
+//class Solution
+//{
+//	typedef TreeNode Node;
+//public:
+//	vector<vector<int> > Print(TreeNode* pRoot)
+//	{
+//		map<Node*, int> s;
+//		int high = 0;
+//		high = _Depth(pRoot, s);
+//		vector<vector<int> > v(high);
+//		map<Node*, int>::iterator it = s.begin();
+//		while (it != s.end())
+//		{
+//			v[high - (it->second)].push_back((it->first)->val);
+//			it++;
+//		}
+//		return v;
+//	}
+//private:
+//	int  _Depth(Node* root, map<Node*, int> & s)
+//	{
+//		if (root == NULL)
+//			return 0;
+//		size_t L_Depth = 1;
+//		L_Depth += _Depth(root->left, s);
+//		size_t R_Depth = 1;
+//		R_Depth += _Depth(root->right, s);
+//		size_t Depth = L_Depth > R_Depth ? L_Depth : R_Depth;
+//		s[root] = Depth;
+//		return Depth;
+//	}
+//};
+
+
 class Solution
 {
 	typedef TreeNode Node;
 public:
-	vector<vector<int> > Print(TreeNode* pRoot)
+	bool HasSubtree(TreeNode* pRoot1, TreeNode* pRoot2)
 	{
-		map<Node*, int> s;
-		int high = 0;
-		high = _Depth(pRoot, s);
-		vector<vector<int> > v(high);
-		map<Node*, int>::iterator it = s.begin();
-		while (it != s.end())
+		stack<Node*> s1;
+		stack<Node*> s2;
+		if (pRoot1 == NULL || pRoot2 == NULL)
+			return false;
+		_InOrder(s1, pRoot1);
+		_InOrder(s2, pRoot2);
+		while (!s1.empty())
 		{
-			v[high - (it->second)].push_back((it->first)->val);
-			it++;
+			while (s1.top() == s2.top())
+			{
+				s1.pop();
+				s2.pop();
+				if (s2.empty() == true)
+					return true;
+			}
+			s1.pop();
 		}
+		return false;
+	}
+
+	vector<vector<int> > FindPath(TreeNode* root, int expectNumber)
+	{
+		int sum = 0;
+		int count = 0;
+		int countPath = 0;
+		_CountPath(root, expectNumber, sum, countPath);
+		vector<vector<int> > v(countPath);
+		vector<int> help;
+		_FindPath(root, expectNumber, v, help, sum, count);
 		return v;
 	}
-private:
-	int  _Depth(Node* root, map<Node*, int> & s)
+	void  _FindPath(TreeNode* root, int expectNumber, vector<vector<int> >& v,
+		vector<int> help, int sum, int& count)
 	{
 		if (root == NULL)
-			return 0;
-		size_t L_Depth = 1;
-		L_Depth += _Depth(root->left, s);
-		size_t R_Depth = 1;
-		R_Depth += _Depth(root->right, s);
-		size_t Depth = L_Depth > R_Depth ? L_Depth : R_Depth;
-		s[root] = Depth;
-		return Depth;
+			return;
+		sum += root->val;
+		if (sum == expectNumber&&root->left == NULL&&root->right == NULL)
+		{
+			help.push_back(root->val);
+			for (size_t i = 0; i < help.size(); i++)
+			{
+				v[count].push_back(help[i]);
+			}
+			count++;
+			return;
+		}
+		help.push_back(root->val);
+		_FindPath(root->left, expectNumber, v, help, sum, count);
+		_FindPath(root->right, expectNumber, v, help, sum, count);
 	}
+	void  _CountPath(TreeNode* root, int expectNumber, int sum, int& countPath)
+	{
+		if (root == NULL)
+			return;
+		sum += root->val;
+		if (sum == expectNumber&&root->left == NULL&&root->right == NULL)
+		{
+			countPath++;
+			return;
+		}
+		_CountPath(root->left, expectNumber,sum, countPath);
+		_CountPath(root->right, expectNumber, sum ,countPath);
+	}
+protected:
+	void _InOrder(stack<Node*>& s, Node* root)
+	{
+		if (root == NULL)
+		{
+			s.push(NULL);
+			return;
+		}
+		_InOrder(s, root->left);
+		s.push(root);
+		_InOrder(s, root->right);
+	}
+	
+
+
 };
 
 int main()
@@ -177,13 +266,15 @@ int main()
 	root1->left = root2;
 	TreeNode* root3 = new TreeNode(4);
 	root1->right = root3;
-	TreeNode* root4 = new TreeNode(5);
+	TreeNode* root4 = new TreeNode(7);
 	root->right = root4;
-	TreeNode* root5 = new TreeNode(6);
+	TreeNode* root5 = new TreeNode(-2);
 	root4->left = root5;
 	TreeNode* root6 = new TreeNode(7);
 	root4->right = root6;
 	Solution a;
+	a.FindPath(root, 6);
+	/*Solution a;
 	vector<vector<int> >v(3);
 	v = a.Print(root);
 	for (size_t i = 0; i < v.size(); i++)
@@ -193,6 +284,6 @@ int main()
 			cout << v[i][j] << " ";
 		}
 		cout << endl;
-	}
+	}*/
 	return 0;
 }
