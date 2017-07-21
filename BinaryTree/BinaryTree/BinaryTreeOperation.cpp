@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <stack>
+#include <queue>
 using namespace std;
 ////二叉树的高度,递归版
 //class Solution {
@@ -205,6 +206,11 @@ public:
 		vector<vector<int> > v(countPath);
 		vector<int> help;
 		_FindPath(root, expectNumber, v, help, sum, count);
+		for (size_t i = 0; i < v.size(); i++)
+		{
+			if (i % 2 == 0)
+				reverse(v[i].begin(), v[i].end());
+		}
 		return v;
 	}
 	void  _FindPath(TreeNode* root, int expectNumber, vector<vector<int> >& v,
@@ -257,9 +263,102 @@ protected:
 
 };
 
+
+
+
+
+
+//输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
+//如果是则输出Yes, 否则输出No。假设输入的数组的任意两个数字都互不相同。
+class SquenceOfBST
+{
+public:
+	bool VerifySquenceOfBST(vector<int> sequence) 
+	{
+		if (sequence.size() <= 1)
+			return true;
+		 return PartOfBst(0, sequence.size() - 1,sequence);
+	}
+	bool PartOfBst(int begin, int end,vector<int>& sequence)
+	{
+		if (begin == end)
+			return true;
+		int end1 = begin;
+		int begin2 = begin;
+		for (int i = begin; i < end;i++)
+		{
+			if (sequence[i]>sequence[end])
+				begin2 = i;
+		}
+		end1 = begin2 - 1;
+		int j = begin2;
+		while (j < end)
+		{
+			if (sequence[j] < sequence[end])
+				return false;
+			j++;
+		}
+		return PartOfBst(begin, end1, sequence) && PartOfBst(begin2, end - 1, sequence);
+	}
+};
+
+
+
+void LevelOrder(TreeNode* root)
+{
+	queue<TreeNode*> q;  //队列先进先出
+	if (root == NULL)
+		return ;
+	q.push(root);
+	TreeNode* cur = root;
+	while (!q.empty())
+	{
+		cur = q.front();
+		cout << cur->val << " ";
+		if (cur->left != NULL)  
+			q.push(cur->left);
+		if (cur->right != NULL)
+			q.push(cur->right);
+		q.pop();
+	}
+	cout << endl;
+	return;
+}
+
+
+int countZeroNumber(int number)
+{
+	//末尾产生0必须是要有5和0 2*5 5*6 5*8 0
+	//所以只要统计出到n的时候共有多少个数字能够拆出多少含有5,比如25=5*5等
+	int count = 0;
+	for (int i = 1; i <= number; i++)
+	{
+		int j = i;
+		while (j % 5 == 0)
+		{
+			count++;
+			j /= 5;
+		}
+	}
+	return count;
+}
+
+
 int main()
 {
-	TreeNode* root = new TreeNode(1);
+	
+	countZeroNumber(55);
+	/*vector<int> v;
+	v.push_back(1);
+	v.push_back(4);
+	v.push_back(5);
+	v.push_back(6);
+	v.push_back(7);
+	v.push_back(9);
+	v.push_back(10);
+	SquenceOfBST a;
+	cout << a.VerifySquenceOfBST(v) << endl;*/
+	/*TreeNode* root = new TreeNode(1);
 	TreeNode* root1 = new TreeNode(2);
 	root->left = root1;
 	TreeNode* root2 = new TreeNode(3);
@@ -267,13 +366,12 @@ int main()
 	TreeNode* root3 = new TreeNode(4);
 	root1->right = root3;
 	TreeNode* root4 = new TreeNode(7);
-	root->right = root4;
-	TreeNode* root5 = new TreeNode(-2);
+	root->right = root4;*/
+	/*TreeNode* root5 = new TreeNode(-2);
 	root4->left = root5;
 	TreeNode* root6 = new TreeNode(7);
 	root4->right = root6;
-	Solution a;
-	a.FindPath(root, 6);
+	LevelOrder(root);*/
 	/*Solution a;
 	vector<vector<int> >v(3);
 	v = a.Print(root);
