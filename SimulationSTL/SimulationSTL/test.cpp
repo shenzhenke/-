@@ -5,8 +5,9 @@ using namespace std;
 #include "Alloca.h"
 #include "Iterator.h"
 #include "Vector.h"
+#include "RBTree.h"
 int main()
 {
-	TestVector();
+	//TestVector();
 	return 0;
 }

@@ -68,6 +68,7 @@
     <ClInclude Include="Alloca.h" />
     <ClInclude Include="Construct.h" />
     <ClInclude Include="Iterator.h" />
+    <ClInclude Include="RBTree.h" />
     <ClInclude Include="TypeTraits.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
