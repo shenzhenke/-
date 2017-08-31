@@ -1,4 +1,4 @@
-
+#pragma once
 typedef void(*HANDLE_FUNC) ();
 
 template <int inst>
@@ -30,7 +30,7 @@ public:
 		return ret;
 	}
 
-	static void Dealocate(void* p, size_t  n)
+	static void Deallocate(void* p, size_t  n)
 	{
 		free(p);
 	}
@@ -70,10 +70,10 @@ public:
 	{
 		char* result;
 		size_t totalBytes = size*nobjs;  //需要申请的内存所占字节大小
-		size_t leftBytes = _endFree - _satrtFree;  //内存池中剩于的内存大小
+		size_t leftBytes = _endFree - _startFree;  //内存池中剩于的内存大小
 		if (leftBytes >= totalBytes)  //内存池足够申请nobjs个对象
 		{
-			result = _satrtFree;
+			result = _startFree;
 			_startFree += totalBytes;
 			return result;
 		}
@@ -81,8 +81,8 @@ public:
 		{
 			nobjs = leftBytes / size;
 			totalBytes = size*nobjs;
-			result = _satrtFree;
-			_satrtFree += totalBytes;
+			result = _startFree;
+			_startFree += totalBytes;
 			return result;
 		}
 		else   //内存池连一个对象的内存都不能够申请到
@@ -90,12 +90,12 @@ public:
 			if (leftBytes > 0)  //处理剩余内存
 			{
 				size_t index = FREELIST_INDEX(leftBytes);  //将它挂到自由链表合适的位置去
-				((Obj*)_satrtFree)->_freeListLink = _freeList[index];
+				((Obj*)_startFree)->_freeListLink = _freeList[index];
 				_freeList[index] = (Obj*)_startFree;
 			}
 			size_t  bytesToGet = totalBytes * 2 + ROUND_UP(_heapSize >> 4);  //?
-			_satrtFree = (char*)malloc(bytesToGet);
-			if (0 == _satrtFree)
+			_startFree = (char*)malloc(bytesToGet);
+			if (0 == _startFree)
 			{
 				//证明此时内存已经吃紧,到更大自由链表去取
 				for (size_t i = size; i < __NFREELISTS; i++)
@@ -104,15 +104,15 @@ public:
 					if (ret != NULL)
 					{
 						_freeList[i] = ret->_freeListLink;
-						_satrtFree = (char*)ret;
-						_endFree = _satrtFree + (i + 1)*__ALIGN;
+						_startFree = (char*)ret;
+						_endFree = _startFree + (i + 1)*__ALIGN;
 						return ChunkAlloc(size, nobjs);
 					}
 				}
 				_startFree = (char*)__MallocAllocTemplate<0>::Allocate(bytesToGet);
 			}
 			_heapSize += bytesToGet;
-			_endFree = _satrtFree + bytesToGet;
+			_endFree = _startFree + bytesToGet;
 			return ChunkAlloc(size, nobjs);
 		}
 	}
@@ -129,7 +129,7 @@ public:
 		Obj* cur = _freeList[index];
 		for (size_t i = 2; i < nobjs; i++)
 		{
-			Obj* next = (Obj*)((char*)cur + n);
+			Obj* next = (Obj*)((char*)cur + size);
 			cur->_freeListLink = next;
 			cur = next;
 		}
@@ -144,7 +144,7 @@ public:
 			return __MallocAllocTemplate<0>::Allocate(n);
 		}
 		size_t  index = FREELIST_INDEX(n);
-		if (NULL == _freeList[index])  //自由链表上结点不为空，取第一个结点给它
+		if (NULL != _freeList[index])  //自由链表上结点不为空，取第一个结点给它
 		{
 			Obj* ret = _freeList[index];
 			_freeList[index] = ret->_freeListLink;
@@ -159,7 +159,7 @@ public:
 	{
 		if (n > __MAX_BYTES)
 		{
-			__MallocAllocTemplate<0>::Dealocate(ptr, n);
+			__MallocAllocTemplate<0>::Deallocate(ptr, n);
 		}
 	}
 private:
@@ -173,17 +173,16 @@ private:
 		char client_data[1];
 	};
 	static Obj* _freeList[__NFREELISTS];
-	static char* _satrtFree;
+	static char* _startFree;
 	static char* _endFree;
-	static size_t _headSize;
+	static size_t _heapSize;
 };
 
 template<bool threads, int inst>
-typename _DefaultAllocTemplate<threads, inst>::Obj*
-__DefaultAllocTemplate<threads, inst>::_freeList[__NFREELISTS] = { 0 };
+typename __DefaultAllocTemplate<threads, inst>::Obj*  __DefaultAllocTemplate<threads, inst>::_freeList[__NFREELISTS] = { 0 };
 
 template <bool threads, int inst>
-char* __DefaultAllocTemplate<threads, inst>::_satrtFree = NULL;
+char* __DefaultAllocTemplate<threads, inst>::_startFree = NULL;
 
 template <bool threads, int inst>
 char* __DefaultAllocTemplate<threads, inst>::_endFree = NULL;
@@ -210,4 +209,13 @@ public:
 		return (T*)Alloc::Allocate(n*sizeof(T));
 	}
 
+	static void Deallocate(T *p, size_t n)
+	{
+		if (0 != n) Alloc::Deallocate(p, n * sizeof (T));
+	}
+
+	static void Deallocate(T *p)
+	{
+		Alloc::Deallocate(p, sizeof (T));
+	}
 };
